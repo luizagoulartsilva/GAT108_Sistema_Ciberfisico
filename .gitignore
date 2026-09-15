@@ -2,3 +2,15 @@
 build/
 out/
 *.class
+
+# Modelos locais nunca devem entrar no repositorio.
+*.litertlm
+*.tflite
+*.gguf
+*.onnx
+*.safetensors
+*.bin
+
+# Configuracoes locais do Android Studio.
+.idea/
+local.properties
