@@ -40,6 +40,14 @@
 - **Consequencias:** Toda saida do agente sera validada antes de influenciar o sistema; o formato de telemetria permanecera minimo para reduzir consumo de radio.
 - **Decidido por:** Luiza Goulart Silva, em 15/09/2026.
 
+## D-09 - Migração para estrutura de módulos Android
+- **Data:** 16/09/2026
+- **Decisão:** Mover o código de domínio e contratos para o módulo `:app`.
+- **Alternativas consideradas:** Manter estrutura de biblioteca Java pura; usar módulos separados para cada camada.
+- **Motivo:** O Android Studio e as APIs de sensores/serviços de localização funcionam de forma mais integrada dentro de um módulo de aplicação. Facilita o uso de recursos (XML) e ViewBinding.
+- **Consequências:** Os caminhos de source e test foram atualizados para `app/src/main` e `app/src/test`.
+- **Decidido por:** Luiza Goulart Silva, em 16/09/2026.
+
 ## D-06 - Motor de inferencia local
 - **Data:** 15/09/2026
 - **Decisao:** O `RuleEngine` sera a linha de base obrigatoria. O `LocalEngine` sera avaliado somente se o levantamento do aparelho confirmar arquitetura e memoria compativeis.
