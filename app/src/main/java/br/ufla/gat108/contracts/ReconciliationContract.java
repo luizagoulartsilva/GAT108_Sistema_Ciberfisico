@@ -21,6 +21,11 @@ public interface ReconciliationContract {
      * @param residualBefore Resíduo cinemático (erro) original.
      * @param residualAfter Resíduo cinemático após o ajuste/filtro.
      * @param corrected Lista de amostras com valores de aceleração/velocidade ajustados.
+     * @param grossErrorsDetected Quantidade de amostras descartadas ou identificadas como erro grosseiro.
      */
-    record ReconciliationResult(double residualBefore, double residualAfter, List<Fix> corrected) { }
+    record ReconciliationResult(double residualBefore, double residualAfter, List<Fix> corrected, int grossErrorsDetected) {
+        public ReconciliationResult(double residualBefore, double residualAfter, List<Fix> corrected) {
+            this(residualBefore, residualAfter, corrected, 0);
+        }
+    }
 }
