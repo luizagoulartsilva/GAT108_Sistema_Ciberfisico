@@ -1,0 +1,15 @@
+﻿<resources>
+    <string name="app_name">GAT108 Trabalhador Isolado</string>
+    <string name="title_dashboard">Sistema Ciberfísico - Monitoramento</string>
+    <string name="subtitle_worker">Trabalhador de Campo</string>
+    <string name="status_system">Status do Sistema: Pronto (S1)</string>
+    <string name="btn_test_fix">Simular Amostra (Fix) &amp; Buffer (Track)</string>
+    <string name="txt_log_title">Log de Eventos e Domínio:</string>
+    <string name="label_operator_info">Informações do Operador</string>
+    <string name="loading">Carregando...</string>
+    <string name="default_place">Posto: Vigilância Norte</string>
+    <string name="label_telemetry">Buffer Circular (Track) &amp; Telemetria</string>
+    <string name="empty_buffer">Buffer vazio (0/50 amostras)</string>
+    <string name="no_readings">Nenhuma leitura registrada</string>
+    <string name="log_init">Sistema inicializado com sucesso.\n</string>
+</resources>
