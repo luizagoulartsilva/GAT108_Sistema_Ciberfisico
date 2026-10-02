@@ -120,25 +120,42 @@
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <Button
-        android:id="@+id/btnSimulateFix"
+    <LinearLayout
+        android:id="@+id/layoutActionButtons"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/btn_test_fix"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@id/cardTelemetry"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <Button
+            android:id="@+id/btnToggleService"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="4dp"
+            android:text="@string/btn_start_service" />
+
+        <Button
+            android:id="@+id/btnSimulateFix"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="4dp"
+            android:text="@string/btn_test_fix" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tvLogTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:text="@string/txt_log_title"
         android:textStyle="bold"
         android:textColor="@color/text_primary"
-        app:layout_constraintTop_toBottomOf="@id/btnSimulateFix"
+        app:layout_constraintTop_toBottomOf="@id/layoutActionButtons"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
