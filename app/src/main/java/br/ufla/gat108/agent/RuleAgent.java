@@ -5,6 +5,8 @@ import br.ufla.gat108.domain.Event;
 import br.ufla.gat108.domain.Fix;
 import br.ufla.gat108.domain.Track;
 
+import java.util.Locale;
+
 /**
  * Agente de regras (Baseline - Capacidade 8).
  * Detecta quedas através de limiares de impacto.
@@ -21,6 +23,11 @@ public class RuleAgent implements AgentContract {
         }
 
         Fix latest = track.latest();
+        if (latest == null || latest.reading() == null) {
+            return new Event(Event.EventType.INSUFFICIENT_EVIDENCE,
+                System.currentTimeMillis(), "Amostra inválida");
+        }
+
         double ax = latest.reading().accelerationX();
         double ay = latest.reading().accelerationY();
         double az = latest.reading().accelerationZ();
@@ -28,7 +35,7 @@ public class RuleAgent implements AgentContract {
 
         if (magnitude > FALL_THRESHOLD) {
             return new Event(Event.EventType.FALL, latest.timestampMillis(), 
-                "Impacto detectado: " + String.format("%.2f", magnitude) + " m/s^2");
+                "Impacto detectado: " + String.format(Locale.US, "%.2f", magnitude) + " m/s^2");
         }
 
         return new Event(Event.EventType.INSUFFICIENT_EVIDENCE, 

@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
     private void updateServiceButtonState() {
         if (SensorService.isRunning()) {
             binding.btnToggleService.setText(R.string.btn_stop_service);
-            binding.btnToggleService.setBackgroundColor(ContextCompat.getColor(this, android.R.color.holo_red_dark));
+            binding.btnToggleService.setBackgroundColor(ContextCompat.getColor(this, R.color.status_error));
         } else {
             binding.btnToggleService.setText(R.string.btn_start_service);
             binding.btnToggleService.setBackgroundColor(ContextCompat.getColor(this, R.color.primary));

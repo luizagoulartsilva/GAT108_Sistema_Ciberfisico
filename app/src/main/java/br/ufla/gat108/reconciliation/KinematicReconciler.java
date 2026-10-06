@@ -7,7 +7,6 @@ import br.ufla.gat108.domain.UncertaintyModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class KinematicReconciler implements ReconciliationContract {
 
@@ -18,7 +17,7 @@ public class KinematicReconciler implements ReconciliationContract {
     }
 
     public KinematicReconciler(GrossErrorDetector errorDetector) {
-        this.errorDetector = Objects.requireNonNullElseGet(errorDetector, GrossErrorDetector::new);
+        this.errorDetector = errorDetector != null ? errorDetector : new GrossErrorDetector();
     }
 
     public GrossErrorDetector getErrorDetector() {

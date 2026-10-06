@@ -96,7 +96,7 @@ class SensitivityAnalysisTest {
                 int tp = 0;
                 for (List<Fix> trial : fallTrials) {
                     List<Event> events = engine.replay(trial, 50);
-                    boolean detectedFall = events.stream().anyMatch(e -> e.type() == Event.EventType.FALL);
+                    boolean detectedFall = hasFallEvent(events);
                     if (detectedFall) {
                         tp++;
                     }
@@ -106,7 +106,7 @@ class SensitivityAnalysisTest {
                 int fp = 0;
                 for (List<Fix> trial : normalTrials) {
                     List<Event> events = engine.replay(trial, 50);
-                    boolean falseAlarm = events.stream().anyMatch(e -> e.type() == Event.EventType.FALL);
+                    boolean falseAlarm = hasFallEvent(events);
                     if (falseAlarm) {
                         fp++;
                     }
@@ -131,5 +131,15 @@ class SensitivityAnalysisTest {
 
         assertFalse(reportRows.isEmpty());
         assertNotNull(reportRows.get(0));
+    }
+
+    private boolean hasFallEvent(List<Event> events) {
+        if (events == null) return false;
+        for (Event event : events) {
+            if (event != null && event.type() == Event.EventType.FALL) {
+                return true;
+            }
+        }
+        return false;
     }
 }
