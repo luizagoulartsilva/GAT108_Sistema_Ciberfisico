@@ -1,11 +1,16 @@
-﻿<resources>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
     <color name="primary">#1976D2</color>
     <color name="primary_dark">#0D47A1</color>
     <color name="accent">#FF9800</color>
     <color name="background">#F5F5F7</color>
     <color name="surface">#FFFFFF</color>
     <color name="text_primary">#212121</color>
-    <color name="text_secondary">#757575</color>
+    <color name="text_secondary">#616161</color>
     <color name="status_ok">#2E7D32</color>
     <color name="status_error">#D32F2F</color>
+    <color name="card_stroke">#E0E0E0</color>
+    <color name="log_bg">#F0F2F5</color>
+    <color name="log_text">#1A1A1A</color>
+    <color name="log_border">#D0D4DC</color>
 </resources>

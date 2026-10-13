@@ -2,12 +2,17 @@ package br.ufla.gat108;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -15,6 +20,7 @@ import br.ufla.gat108.acquisition.AcquisitionStats;
 import br.ufla.gat108.acquisition.SensorService;
 import br.ufla.gat108.databinding.ActivityMainBinding;
 import br.ufla.gat108.domain.Fix;
+import br.ufla.gat108.domain.InvalidDomainException;
 import br.ufla.gat108.domain.SensorReading;
 import br.ufla.gat108.domain.Track;
 import br.ufla.gat108.domain.Worker;
@@ -25,11 +31,16 @@ import java.util.Locale;
 
 /**
  * Interface principal do aplicativo (Views com ViewBinding).
- * Permite inicializar o serviço de aquisição periódica (50Hz) com WakeLock para o teste de 30 minutos.
+ * Permite inicializar o serviço de aquisição periódica (50Hz) com WakeLock para o teste de 30 minutos,
+ * além de permitir o cadastro e edição das informações do operador com persistência local.
  */
 public class MainActivity extends AppCompatActivity {
 
     private static final int PERMISSION_REQUEST_CODE = 1001;
+    private static final String PREFS_NAME = "gat108_operator_prefs";
+    private static final String KEY_WORKER_NAME = "worker_name";
+    private static final String KEY_WORKER_PLACE = "worker_place";
+
     private ActivityMainBinding binding;
     private final Handler uiHandler = new Handler(Looper.getMainLooper());
     private Runnable uiUpdaterRunnable;
@@ -49,17 +60,78 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupWorkerInfo() {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        String name = prefs.getString(KEY_WORKER_NAME, "Luiza Goulart Silva");
+        String place = prefs.getString(KEY_WORKER_PLACE, "Vigilância Norte");
+
+        updateOperatorDisplay(name, place);
+    }
+
+    private void updateOperatorDisplay(String name, String place) {
         try {
-            Worker worker = new Worker("Luiza Goulart Silva");
-            binding.tvWorkerInfo.setText(String.format(Locale.US, "Operador: %s (ID: TRAB-01)", worker.workerId()));
+            Worker worker = new Worker(name);
+            binding.tvWorkerInfo.setText(String.format(Locale.US, "Operador: %s", worker.workerId()));
         } catch (Exception e) {
-            binding.tvWorkerInfo.setText(R.string.loading);
+            binding.tvWorkerInfo.setText(String.format(Locale.US, "Operador: %s", name));
         }
+        binding.tvPlaceInfo.setText(String.format(Locale.US, "Posto: %s", place));
     }
 
     private void setupListeners() {
         binding.btnToggleService.setOnClickListener(v -> toggleSensorService());
         binding.btnSimulateFix.setOnClickListener(v -> simulateFix());
+        binding.btnEditWorker.setOnClickListener(v -> showEditWorkerDialog());
+    }
+
+    private void showEditWorkerDialog() {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        String currentName = prefs.getString(KEY_WORKER_NAME, "Luiza Goulart Silva");
+        String currentPlace = prefs.getString(KEY_WORKER_PLACE, "Vigilância Norte");
+
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_edit_worker, null);
+        EditText etWorkerName = dialogView.findViewById(R.id.etWorkerName);
+        EditText etWorkerPlace = dialogView.findViewById(R.id.etWorkerPlace);
+
+        etWorkerName.setText(currentName);
+        etWorkerPlace.setText(currentPlace);
+
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.dialog_title_operator)
+                .setView(dialogView)
+                .setPositiveButton(R.string.btn_save, (dialog, which) -> {
+                    String newName = etWorkerName.getText().toString().trim();
+                    String newPlace = etWorkerPlace.getText().toString().trim();
+
+                    if (newName.isEmpty()) {
+                        Toast.makeText(this, R.string.error_empty_worker, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    saveWorkerInfo(newName, newPlace);
+                })
+                .setNegativeButton(R.string.btn_cancel, null)
+                .show();
+    }
+
+    private void saveWorkerInfo(String name, String place) {
+        try {
+            Worker worker = new Worker(name);
+            String finalPlace = place.isEmpty() ? "Vigilância Norte" : place;
+
+            SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+            prefs.edit()
+                    .putString(KEY_WORKER_NAME, worker.workerId())
+                    .putString(KEY_WORKER_PLACE, finalPlace)
+                    .apply();
+
+            updateOperatorDisplay(worker.workerId(), finalPlace);
+            appendLog(String.format(Locale.US, "Operador atualizado: %s | Posto: %s", worker.workerId(), finalPlace));
+            Toast.makeText(this, "Informações do operador salvas com sucesso!", Toast.LENGTH_SHORT).show();
+        } catch (InvalidDomainException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.error_empty_worker, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void toggleSensorService() {

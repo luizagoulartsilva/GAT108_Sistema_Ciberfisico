@@ -14,4 +14,11 @@
     <string name="log_init">Sistema inicializado com sucesso.\n</string>
     <string name="btn_start_service">Iniciar Aquisição 50Hz</string>
     <string name="btn_stop_service">Parar Aquisição 50Hz</string>
+    <string name="btn_edit_operator">Editar</string>
+    <string name="dialog_title_operator">Cadastrar / Editar Operador</string>
+    <string name="hint_worker_name">Nome do Operador</string>
+    <string name="hint_worker_place">Posto / Local de Trabalho</string>
+    <string name="btn_save">Salvar</string>
+    <string name="btn_cancel">Cancelar</string>
+    <string name="error_empty_worker">O nome do operador não pode ser vazio.</string>
 </resources>
