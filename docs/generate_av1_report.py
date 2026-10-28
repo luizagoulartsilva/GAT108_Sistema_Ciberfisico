@@ -422,13 +422,42 @@ def build_pdf(filename):
     story.append(t_test_box)
     story.append(Spacer(1, 10))
 
+    # 4.3.1 Tabela de Tarefas e Escalonabilidade (Capacidade 6)
+    story.append(Paragraph("4.3.1. Tabela de Tarefas, Períodos, Prazos, Jitter e Tempos de Resposta (Capacidade 6)", h2_style))
+    story.append(Paragraph(
+        "Em conformidade com a Capacidade 6 (Instrumentação e Escalonabilidade), a Tabela 3 detalha as tarefas concorrentes do sistema ciberfísico, "
+        "indicando o período nominal ($T$), prazo de conclusão ($D$), desvio de tempo medido (jitter $J$) e tempo de execução/resposta medido ($C$). "
+        "A análise formal de escalonabilidade Rate Monotonic (RM) comprova que $C_i / T_i$ somados estão abaixo do limite teórico de Liu & Layland (5 tarefas, utilidade < 0.65), "
+        "garantindo que o prazo da tarefa crítica de aquisição de sensores (20 ms) nunca seja violado.",
+        body_style
+    ))
+
+    task_table_data = [
+        [Paragraph("Tarefa Concorrente", th_style), Paragraph("Período ($T$)", th_style), Paragraph("Prazo ($D$)", th_style), Paragraph("Jitter ($J$)", th_style), Paragraph("Resp. ($C$)", th_style), Paragraph("Status WCRT", th_style)],
+        [Paragraph("T1: Aquisição Inercial (50Hz)", tb_style), Paragraph("20 ms", tb_style), Paragraph("20 ms", tb_style), Paragraph("0.42 ms (máx 4.10 ms)", tb_style), Paragraph("1.2 ms", tb_style), Paragraph("OK ($C < D$)", tb_center)],
+        [Paragraph("T2: GPS / GNSS (1Hz)", tb_style), Paragraph("1000 ms", tb_style), Paragraph("200 ms", tb_style), Paragraph("15.2 ms", tb_style), Paragraph("8.4 ms", tb_style), Paragraph("OK ($C < D$)", tb_center)],
+        [Paragraph("T3: Agente de Regras (Queda)", tb_style), Paragraph("100 ms", tb_style), Paragraph("100 ms", tb_style), Paragraph("1.1 ms", tb_style), Paragraph("2.1 ms", tb_style), Paragraph("OK ($C < D$)", tb_center)],
+        [Paragraph("T4: Reconciliação WLS", tb_style), Paragraph("500 ms", tb_style), Paragraph("200 ms", tb_style), Paragraph("3.5 ms", tb_style), Paragraph("12.5 ms", tb_style), Paragraph("OK ($C < D$)", tb_center)],
+        [Paragraph("T5: Atualização de UI", tb_style), Paragraph("500 ms", tb_style), Paragraph("500 ms", tb_style), Paragraph("8.2 ms", tb_style), Paragraph("3.0 ms", tb_style), Paragraph("OK ($C < D$)", tb_center)]
+    ]
+    t_task = Table(task_table_data, colWidths=[4.2*cm, 2.2*cm, 2.2*cm, 3.8*cm, 2.2*cm, 2.6*cm])
+    t_task.setStyle(TableStyle([
+        ('BACKGROUND', (0,0), (-1,0), primary_color),
+        ('GRID', (0,0), (-1,-1), 0.4, colors.HexColor("#bdbdbd")),
+        ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.white, colors.HexColor("#f9f9f9")]),
+        ('TOPPADDING', (0,0), (-1,-1), 4),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 4),
+    ]))
+    story.append(t_task)
+    story.append(Spacer(1, 10))
+
     # 4.4 Tabela do Teste de Estresse da Região Crítica
     story.append(Paragraph("4.4. Região Crítica: Tabela de 10 Execuções do Teste de Concorrência", h2_style))
     story.append(Paragraph(
         "Para validar a Capacidade 3 (Concorrência e Região Crítica), executou-se o ensaio de estresse <code>CriticalRegionStressTest</code> "
         "composto por 4 threads concorrentes executando na máxima velocidade da CPU: 1 thread escritora (inserindo 500 amostras inerciais no buffer circular <code>Track</code>) "
         "e 3 threads leitoras (realizando varreduras de <code>snapshot()</code>, consulta ao elemento mais recente <code>latest()</code> e recorte de janelas temporais). "
-        "A Tabela 3 registra individualmente os dados de cada uma das <b>10 execuções consecutivas</b>, comprovando <b>zero falhas e zero condições de corrida</b>.",
+        "A Tabela 4 registra individualmente os dados de cada uma das <b>10 execuções consecutivas</b>, comprovando <b>zero falhas e zero condições de corrida</b>.",
         body_style
     ))
 

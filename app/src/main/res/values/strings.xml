@@ -21,4 +21,6 @@
     <string name="btn_save">Salvar</string>
     <string name="btn_cancel">Cancelar</string>
     <string name="error_empty_worker">O nome do operador não pode ser vazio.</string>
+    <string name="label_task_table">Tabela de Tarefas (Cap. 6 — Escalonabilidade)</string>
+    <string name="task_table_desc">Período (T), Prazo (D), Jitter (J) e Resp. (C)</string>
 </resources>
