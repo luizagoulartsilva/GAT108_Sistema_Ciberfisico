@@ -14,3 +14,6 @@ out/
 # Configuracoes locais do Android Studio.
 .idea/
 local.properties
+
+# Relatorios e artefatos gerados da AV1
+Relatorio_AV1_*.pdf
