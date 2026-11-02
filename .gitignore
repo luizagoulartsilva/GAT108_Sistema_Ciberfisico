@@ -1,0 +1,24 @@
+.gradle/
+build/
+out/
+*.class
+
+# Modelos locais nunca devem entrar no repositorio.
+*.litertlm
+*.tflite
+*.gguf
+*.onnx
+*.safetensors
+*.bin
+
+# Configuracoes locais do Android Studio.
+.idea/
+local.properties
+
+# Relatorios, apresentacoes, roteiros e artefatos gerados da AV1
+Relatorio_AV1_*
+Apresentacao_AV1_*
+Roteiro_Apresentacao_AV1_*
+docs/presentations/
+docs/generate_av1_*.py
+~$*
