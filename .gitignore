@@ -15,5 +15,10 @@ out/
 .idea/
 local.properties
 
-# Relatorios e artefatos gerados da AV1
-Relatorio_AV1_*.pdf
+# Relatorios, apresentacoes, roteiros e artefatos gerados da AV1
+Relatorio_AV1_*
+Apresentacao_AV1_*
+Roteiro_Apresentacao_AV1_*
+docs/presentations/
+docs/generate_av1_*.py
+~$*
