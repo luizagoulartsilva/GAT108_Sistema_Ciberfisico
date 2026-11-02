@@ -21,9 +21,12 @@ import br.ufla.gat108.acquisition.SensorService;
 import br.ufla.gat108.databinding.ActivityMainBinding;
 import br.ufla.gat108.domain.Fix;
 import br.ufla.gat108.domain.InvalidDomainException;
+import br.ufla.gat108.domain.Place;
+import br.ufla.gat108.domain.RoutinePrediction;
 import br.ufla.gat108.domain.SensorReading;
 import br.ufla.gat108.domain.Track;
 import br.ufla.gat108.domain.Worker;
+import br.ufla.gat108.learning.LeaderClusterer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private final Handler uiHandler = new Handler(Looper.getMainLooper());
     private Runnable uiUpdaterRunnable;
     private final Track localTrack = new Track(100);
+    private final LeaderClusterer routineClusterer = new LeaderClusterer();
     private long simulatedTimestampOffset = System.currentTimeMillis();
 
     @Override
@@ -161,7 +165,12 @@ public class MainActivity extends AppCompatActivity {
             localTrack.append(fix);
         }
 
-        appendLog(String.format(Locale.US, "Amostra simulada inserida: t=%d ms, Acc=[0.20, 9.81, 0.50]", now));
+        Place currentPlace = new Place(reading.latitude(), reading.longitude(), now);
+        routineClusterer.trainIncremental(currentPlace, 1800.0);
+        RoutinePrediction prediction = routineClusterer.predict(currentPlace, 1800.0);
+
+        appendLog(String.format(Locale.US, "Amostra simulada: t=%d ms | Acc=[0.20, 9.81, 0.50] | Aprendizado O(1): %s (%d clusters)",
+                now, prediction.explanation(), routineClusterer.activeClusterCount()));
     }
 
     private void startUiUpdater() {

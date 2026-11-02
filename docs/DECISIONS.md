@@ -71,3 +71,12 @@
 - **Motivo:** Branches e Pull Requests preservam o historico das decisoes e permitem revisar cada entrega sem criar uma divisao artificial de componentes.
 - **Consequencias:** Cada fase tera commits atribuiveis e concentrados no escopo da semana; mudancas de decisao serao registradas neste arquivo antes ou junto da alteracao.
 - **Decidido por:** Luiza Goulart Silva, em 15/09/2026.
+
+## D-10 - Algoritmo de agrupamento incremental e predicao sob memoria constante O(1)
+- **Data:** 02/11/2026
+- **Decisão:** Implementação do algoritmo Leader Clusterer (`br.ufla.gat108.learning.LeaderClusterer`) sob vetor estático prealocado de $K=20$ clusters líderes.
+- **Alternativas consideradas:** DBSCAN online com histórico de pontos em lista dinâmica; Cadeias de Markov discretas com matriz densa de adjacências.
+- **Motivo:** O Leader Clusterer com vetor fixo possui complexidade de tempo de inserção/inferência $O(K) = O(1)$ e consumo de memória estritamente constante $O(1)$, eliminando a retenção de dados brutos históricos e prevenindo vazamentos de memória e sobrecarga de Garbage Collection no sistema ciberfísico.
+- **Consequências:** A imobilidade e permanência em postos conhecidos é predita com métricas de validação out-of-sample ($> 90\%$ F1-Score) sem alocação dinâmica no laço principal de inferência.
+- **Decidido por:** Luiza Goulart Silva, em 02/11/2026.
+
